@@ -1,33 +1,17 @@
 name: CI
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
-  test:
+  quality:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
+      # This runs every check defined in your .pre-commit-config.yaml
+      - name: Run Pre-commit Hooks
+        run: uv run pre-commit run --all-files
 
-      - name: Set up Python
-        run: uv python install
-
-      - name: Install dependencies
-        run: uv sync
-
-      - name: Run Ruff (Lint & Format)
-        run: uv run ruff check . && uv run ruff format --check .
-
-      - name: Run Mypy (Type Check)
-        run: uv run mypy src
-
-      - name: Run Pytest
+      # This runs your actual logic tests
+      - name: Run Tests
         run: uv run pytest
