@@ -1,0 +1,15 @@
+# Python
+__pycache__
+.venv
+.eggs
+
+# IDE
+.idea
+.vscode
+
+# System
+.DS_Store
+
+# Pre-commit
+.ruff_cache
+.mypy_cache
